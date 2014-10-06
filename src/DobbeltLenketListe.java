@@ -22,11 +22,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 	// hjelpemetode
 	private void indeksKontroll(int indeks) {
 		if (indeks < 0) {
-			throw new IndexOutOfBoundsException("Indeks " +
-					indeks + " er negativ!");
+			throw new IndexOutOfBoundsException("Indeks " + indeks + " er negativ!");
 		} else if (indeks >= antall) {
-			throw new IndexOutOfBoundsException("Indeks " +
-					indeks + " >= antall(" + antall + ") noder!");
+			throw new IndexOutOfBoundsException("Indeks " + indeks + " >= antall(" + antall + ") noder!");
 		}
 	}
 
@@ -44,12 +42,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public int antall() {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		antall = 0;
+		for (T t : this) antall++;
+		return antall;
 	}
 
 	@Override
 	public boolean tom() {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		return antall() == 0;
 	}
 
 	@Override
@@ -142,4 +142,4 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 		}
 
 	} // DobbeltLenketListeIterator
-} // DobbeltLenketListe  
+} // DobbeltLenketListe
