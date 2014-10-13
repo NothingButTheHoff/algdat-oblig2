@@ -1,6 +1,5 @@
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -33,7 +32,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	// hjelpemetode
 	private Node<T> finnNode(int indeks) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		Node<T> returnNode = null;
+
+		if(indeks < antall/2){
+			returnNode = hode;
+			for(int i=0;i<indeks;i++) returnNode = returnNode.neste;
+		} else {
+			returnNode = hale;
+			for(int i=antall-1;i>indeks;i--) returnNode = returnNode.forrige;
+		}
+
+		return returnNode;
 	}
 
 	// konstruktør
@@ -82,7 +91,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public T hent(int indeks) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		indeksKontroll(indeks);
+		return finnNode(indeks).verdi;
 	}
 
 	@Override
@@ -92,7 +102,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public T oppdater(int indeks, T nyverdi) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		indeksKontroll(indeks);
+		Objects.requireNonNull(nyverdi, "Den nye verdien kan ikke være et null-objekt");
+
+		Node<T> node = finnNode(indeks);
+		T gammelVerdi = node.verdi;
+
+		node.verdi = nyverdi;
+
+		antallEndringer++;
+		return gammelVerdi;
 	}
 
 	@Override
@@ -194,7 +213,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 			}
 
 			// TODO: Bedre melding
-			if(denne == null) throw new NoSuchElementException("Elementet er null");
+			Objects.requireNonNull(denne, "Objektet kan ikke være et null-objekt");
 
 			fjernOK = true;
 			T tmp = denne.verdi;
