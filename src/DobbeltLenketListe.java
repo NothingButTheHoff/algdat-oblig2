@@ -1,6 +1,7 @@
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
 
@@ -44,19 +45,29 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public int antall() {
-		antall = 0;
-		for (T t : this) antall++;
 		return antall;
 	}
 
 	@Override
 	public boolean tom() {
-		return antall() == 0;
+		return (antall == 0 && hode == null && hale == null);
 	}
 
 	@Override
 	public boolean leggInn(T verdi) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		// Kaster exception hvis verdi er null
+		Objects.requireNonNull(verdi, "Verdien kan ikke være et null-objekt");
+
+		if (tom()){
+			hode = hale = new Node<T>(verdi, null, null);
+		} else {
+			hale = new Node<T>(verdi, hale, null);
+		}
+
+		antallEndringer++;
+		antall++;
+
+		return true;
 	}
 
 	@Override
