@@ -86,7 +86,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public boolean inneholder(T verdi) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		return indeksTil(verdi) != -1;
 	}
 
 	@Override
@@ -97,7 +97,21 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public int indeksTil(T verdi) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		Node<T> node = hode;
+
+		boolean funnet = false;
+		int indeks = 0;
+
+		while (node != null){
+			if(node.verdi.equals(verdi)){
+				funnet = true;
+				break;
+			}
+			node = node.neste;
+			indeks++;
+		}
+
+		return funnet ? indeks : -1;
 	}
 
 	@Override
