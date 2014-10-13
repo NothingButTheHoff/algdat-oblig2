@@ -1,4 +1,6 @@
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
 
@@ -108,11 +110,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		return new DobbeltLenketListeIterator();
 	}
 
 	public Iterator<T> iterator(int indeks) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		return new DobbeltLenketListeIterator(indeks);
 	}
 
 	private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -126,14 +128,36 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 			forventetAntallEndringer = antallEndringer;  // teller endringer
 		}
 
+		private DobbeltLenketListeIterator(int indeks){
+			indeksKontroll(indeks);
+
+			denne = hode;
+			fjernOK = false;
+			forventetAntallEndringer = antallEndringer;
+
+			for(int i=0; i<indeks;i++) next();
+		}
+
 		@Override
 		public boolean hasNext() {
-			throw new UnsupportedOperationException("Ikke laget ennå!");
+			return denne != null;
 		}
 
 		@Override
 		public T next() {
-			throw new UnsupportedOperationException("Ikke laget ennå!");
+			// TODO: Bedre melding?
+			if(antallEndringer != forventetAntallEndringer){
+				throw new ConcurrentModificationException("antallEndringer("+antallEndringer+") != forventetAntallEndringer("+forventetAntallEndringer+")");
+			}
+
+			// TODO: Bedre melding
+			if(denne == null) throw new NoSuchElementException("Elementet er null");
+
+			fjernOK = true;
+			T tmp = denne.verdi;
+			denne = denne.neste;
+
+			return tmp;
 		}
 
 		@Override
