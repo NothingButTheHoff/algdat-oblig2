@@ -61,7 +61,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 		if (tom()){
 			hode = hale = new Node<T>(verdi, null, null);
 		} else {
-			hale = new Node<T>(verdi, hale, null);
+			hale = hale.neste = new Node<T>(verdi, hale, null);
 		}
 
 		antallEndringer++;
@@ -112,11 +112,43 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public String toString() {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		if(tom()) return "[]";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append('[');
+
+		Node<T> node = hode;
+
+		sb.append(node.verdi);
+		node = node.neste;
+
+		while(node != null){
+			sb.append(',').append(' ').append(node.verdi);
+			node = node.neste;
+		}
+
+		sb.append(']');
+		return sb.toString();
 	}
 
 	public String omvendtString() {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		if(tom()) return "[]";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append('[');
+
+		Node<T> node = hale;
+
+		sb.append(node.verdi);
+		node = node.forrige;
+
+		while(node != null){
+			sb.append(',').append(' ').append(node.verdi);
+			node = node.forrige;
+		}
+
+		sb.append(']');
+		return sb.toString();
 	}
 
 	@Override
