@@ -130,12 +130,71 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	@Override
 	public boolean fjern(T verdi) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		if(verdi == null) return false;
+
+		Node<T> gjeldendeNode = hode;
+
+		while(gjeldendeNode != null){
+			if(gjeldendeNode.verdi.equals(verdi)){
+				break;
+			}
+
+			gjeldendeNode = gjeldendeNode.neste;
+		}
+
+		if(gjeldendeNode == null) return false;
+
+		if(gjeldendeNode == hode){ // Første node
+			hode = hode.neste;
+
+			if(hode != null) {
+				hode.forrige = null;
+			} else {
+				hale = null;
+			}
+		} else if(gjeldendeNode == hale){ // Siste node
+			hale = hale.forrige;
+			hale.neste = null;
+		} else {
+			gjeldendeNode.forrige.neste = gjeldendeNode.neste;
+			gjeldendeNode.neste.forrige = gjeldendeNode.forrige;
+		}
+
+		gjeldendeNode.verdi = null;
+		gjeldendeNode.forrige = gjeldendeNode.neste = null;
+
+		antall--;
+		antallEndringer++;
+
+		return true;
 	}
 
 	@Override
 	public T fjern(int indeks) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
+		indeksKontroll(indeks);
+		Node<T> temp;
+
+		if(indeks == 0){ // Første node
+			temp = hode;
+			hode = hode.neste;
+			hode.forrige = null;
+		} else if(indeks == antall-1){ // Siste node
+			temp = hale;
+			hale = hale.forrige;
+			hale.neste = null;
+		} else {
+			Node<T> p = finnNode(indeks-1);
+
+			temp = p.neste;
+
+			p.neste = p.neste.neste;
+			p.neste.forrige = p;
+		}
+
+
+		antall--;
+		antallEndringer++;
+		return temp.verdi;
 	}
 
 	@Override
