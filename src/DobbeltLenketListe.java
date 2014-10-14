@@ -1,7 +1,7 @@
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.*;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
 
@@ -37,10 +37,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 		Node<T> returnNode = null;
 
 		if(indeks < antall/2){
-			returnNode = hale;
+			returnNode = hode;
 			for(int i=0;i<indeks;i++) returnNode = returnNode.neste;
 		} else {
-			returnNode = hode;
+			returnNode = hale;
 			for(int i=antall-1;i>indeks;i--) returnNode = returnNode.forrige;
 		}
 
@@ -278,6 +278,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 			indeksKontroll(indeks);
 
 			denne = hode;
+
 			fjernOK = false;
 			forventetAntallEndringer = antallEndringer;
 
@@ -309,21 +310,25 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException("Ikke laget ennå!");
-		}
-
+    }
 
 
     } // DobbeltLenketListeIterator
 
-    //OPPGAVE 9a
 
+    //OPPGAVE 9a
 
     @Override
     public void forEach(Consumer<? super T> action) {
         Objects.requireNonNull(action);
-        for (T t : this) {
-            action.accept(t);
+
+        Node<T> denne = hode;
+
+        for (int i = 0; i < antall; i ++){
+            action.accept(denne.verdi);
+            denne = denne.neste;
         }
+
     }
 
 } // DobbeltLenketListe
