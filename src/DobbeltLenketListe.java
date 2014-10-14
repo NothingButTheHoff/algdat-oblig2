@@ -1,6 +1,7 @@
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
 
@@ -14,6 +15,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 			this.forrige = forrige;
 			this.neste = neste;
 		}
+
 	}
 
 	private Node<T> hode;          // peker til den første i listen
@@ -35,10 +37,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 		Node<T> returnNode = null;
 
 		if(indeks < antall/2){
-			returnNode = hode;
+			returnNode = hale;
 			for(int i=0;i<indeks;i++) returnNode = returnNode.neste;
 		} else {
-			returnNode = hale;
+			returnNode = hode;
 			for(int i=antall-1;i>indeks;i--) returnNode = returnNode.forrige;
 		}
 
@@ -79,10 +81,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 		return true;
 	}
 
-	@Override
-	public void leggInn(int indeks, T verdi) {
-		throw new UnsupportedOperationException("Ikke laget ennå!");
-	}
+    @Override
+      public void leggInn(int indeks, T verdi)
+      {
+        throw new UnsupportedOperationException("Ikke laget ennå!");
+      }
+
 
 	@Override
 	public boolean inneholder(T verdi) {
@@ -307,5 +311,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 			throw new UnsupportedOperationException("Ikke laget ennå!");
 		}
 
-	} // DobbeltLenketListeIterator
+
+
+    } // DobbeltLenketListeIterator
+
+    //OPPGAVE 9a
+
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        Objects.requireNonNull(action);
+        for (T t : this) {
+            action.accept(t);
+        }
+    }
+
 } // DobbeltLenketListe
