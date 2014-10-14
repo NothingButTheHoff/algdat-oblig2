@@ -312,6 +312,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 			throw new UnsupportedOperationException("Ikke laget ennå!");
     }
 
+        @Override
+        public void forEachRemaining(Consumer<? super T> action){
+            Objects.requireNonNull(action);
+            Node<T> denne = hode;
+
+            for (int i = 0; i < antall; i ++){
+                action.accept(denne.verdi);
+                denne = denne.neste;
+            }
+        }
 
     } // DobbeltLenketListeIterator
 
