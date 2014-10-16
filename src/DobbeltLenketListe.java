@@ -4,6 +4,16 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ *  Obligatorisk oppgave 2 i Algoritmer og datastrukturer
+ *
+ *
+ *	Anvendt datateknologi, 3. året
+ *	––––––––––––––––––––––––––––––––––––––––––
+ *  Even Holthe			<s189124@stud.hioa.no>
+ *  Per Erik Finstad	<s189138@stud.hioa.no>
+ *
+ */
 public class DobbeltLenketListe<T> implements Liste<T> {
 
 	// En indre nodeklasse
@@ -35,7 +45,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 	// hjelpemetode
 	private Node<T> finnNode(int indeks) {
-		Node<T> returnNode = null;
+		Node<T> returnNode;
 
 		if (indeks < antall / 2) {
 			returnNode = hode;
@@ -338,19 +348,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 		@Override
 		public void remove() {
-			if(!fjernOK) throw new IllegalStateException("Ugyldig tilstand!");
+			if (!fjernOK) throw new IllegalStateException("Ugyldig tilstand!");
 			else if (antallEndringer != forventetAntallEndringer) {
 				throw new ConcurrentModificationException("antallEndringer(" + antallEndringer + ") != forventetAntallEndringer(" + forventetAntallEndringer + ")");
 			}
 
 			fjernOK = false;
 
-			if(antall == 1){ // Eneste verdi
+			if (antall == 1) { // Eneste verdi
 				hode = hale = null;
-			} else if (denne == null){ // Siste som skal fjernes
+			} else if (denne == null) { // Siste som skal fjernes
 				hale = hale.forrige;
 				hale.neste = null;
-			} else if (denne.forrige == hode){ // Første som skal fjernes
+			} else if (denne.forrige == hode) { // Første som skal fjernes
 				hode = hode.neste;
 				hode.forrige = null;
 			} else { // Node inne i listen
@@ -368,7 +378,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 			Objects.requireNonNull(action, "Handling kan ikke være null!");
 			Node<T> node = denne;
 
-			while(node != null){
+			while (node != null) {
 				action.accept(node.verdi);
 				node = node.neste;
 			}
