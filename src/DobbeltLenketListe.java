@@ -1,7 +1,8 @@
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.function.*;
+import java.util.function.Consumer;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
 
@@ -318,7 +319,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 		@Override
 		public T next() {
 			// TODO: Bedre melding?
-			if(antallEndringer != forventetAntallEndringer){
+			if(!hasNext()) {
+				throw new NoSuchElementException("Listen har ingen flere verdier");
+			} else if(antallEndringer != forventetAntallEndringer){
 				throw new ConcurrentModificationException("antallEndringer("+antallEndringer+") != forventetAntallEndringer("+forventetAntallEndringer+")");
 			}
 
